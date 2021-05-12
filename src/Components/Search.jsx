@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { set } from 'react-hook-form';
 import Detail from './Detail';
 import Team from './Team';
 import FormSearch from './FormSearch';
+// import axios from 'axios';
 
 
 
