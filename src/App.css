@@ -1,10 +1,28 @@
 
+.search-secc{
+    width: 70%;
+    margin-top: 2%;
+}
+
+.searchCard{
+    max-width: 45%;
+}
+
+.cardTeam{
+    width: 30%;
+}
+.cardTeam .card-header{
+    height: 20%;
+}
 .cardTeam .card{
     width: 20%;
 }
 
-.cardTeam img, .detail img{
-    width: 5rem;
+.detail img{
+    width: 11vh;
+}
+.cardTeam img {
+    width: 11vh;
 }
 
 .cardTeam button{
@@ -17,4 +35,20 @@
 
 .search input{
     font-size: small;
+}
+
+.listResults li{
+    font-size: xx-small;
+}
+
+/* LOGIN */
+
+.formLogin{
+    max-width: 30%;
+    margin: auto;
+}
+
+.formLogin img{
+    /* width: 70px; */
+    height: 8rem
 }

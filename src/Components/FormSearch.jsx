@@ -9,7 +9,6 @@ const FormSearch = (props) => {
     const onSubmit = (data, e)=>{
         
         // e.preventDefault()
-        console.log('gfkygfkjyh');
         console.log(data)
 
         props.getSuperhero(data.idHero)

@@ -1,13 +1,13 @@
 import React from 'react'
 import '../App.css';
 
-const Team = ({deleteSuper, superh}) => {
+const Team = ({deleteSuper, showMember, superh}) => {
 
     
 
     return (
 
-        <div className="card-deck mb-3 text-center mt-3 cardTeam col-3">
+        <div className="card-deck mb-3 text-center mt-3 cardTeam ">
             <div className="card mb-4 shadow-sm">
                 <div className="card-header">
                     <h6>{superh.name}</h6>
@@ -22,7 +22,7 @@ const Team = ({deleteSuper, superh}) => {
                         {/* <li> Combat: {superhero.}</li> */}
                     </ul>
                     <div className="btn-group">
-                        <button className="btn btn-info my-1 py-0 px-1">Details</button>
+                        <button onClick={() => {showMember(superh.id)}} className="btn btn-info my-1 py-0 px-1">Details</button>
                         <button onClick={() => {deleteSuper(superh.id)}} className="btn btn-danger my-1 py-0 px-1">Remove</button>
                     </div>                  
                 </div>

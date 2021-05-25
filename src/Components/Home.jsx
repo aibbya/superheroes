@@ -7,7 +7,7 @@ const Home = () => {
         <div>
             <Search></Search>
         </div>
-    )
+    ) 
 }
 
 export default Home

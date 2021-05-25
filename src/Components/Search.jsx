@@ -3,19 +3,24 @@ import Detail from './Detail';
 import Team from './Team';
 import FormSearch from './FormSearch';
 // import axios from 'axios';
-
+import ListOfResultsByName from './ListOfResultsByName';
+import Swal from 'sweetalert'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import useLocalStorage from '../hooks/useLocalStorage'
 
 
 const Search = () => {
 
     const [superhero, setSuperhero] = useState(null)
-    const [team, setTeam] = useState([])
+    const [team, setTeam] = useLocalStorage('',[])
     const [idSuper, setIdSuper] = useState('')
     const [error, setError]= useState('')
     const [byName, setByName]= useState(null)
     const [results, setResults] = useState([])
     const [superOfTeam, setSuperOfTeam] = useState(null)
-    // const [validTeam, setValidTeam] = false;
+    const [stateResults, setStateResults] = useState(false);
+    const [msnError, setMsnError] = useState('')
 
 
     useEffect(() => {
@@ -23,11 +28,10 @@ const Search = () => {
     }, [])    
     
     const getSuperhero = async (id, e) => {   
-       
-        const data = await fetch('https://superheroapi.com/api/10158049106275592/'+id)
+       const data = await fetch('https://superheroapi.com/api/10158049106275592/'+id)
             .then(r => r.json())
             .catch(e => console.log(e))
-        setResults('')
+        // setResults('')
         setSuperhero(data)
         console.log(data);
     }
@@ -46,14 +50,26 @@ const Search = () => {
         console.log(dataByName)
         if(dataByName.response === "success"){
             setResults(dataByName.results)
+            setStateResults(true)
         } else{
-            setResults('')
-            setError('Name not found')
+            setResults([])
+            setStateResults(false)
+            setMsnError('Name not found')
         }
         
         console.log(results);
 
     }
+    const notifyAdd = () => 
+    toast.success('🦄 Added!', {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });;
 
     const addSuper = () =>{
                 
@@ -61,6 +77,8 @@ const Search = () => {
             ...team, 
             superhero
         ]);
+        // Swal("Superhero added");
+       notifyAdd()
         // setValidTeam(true)
     }
     const viewSuper = () =>{
@@ -74,19 +92,44 @@ const Search = () => {
         setTeam(team.filter(hero => hero.id !== id))
     }
 
+    const showMember = (id) =>{
+        
+        let member = team.filter(hero => hero.id === id)
+        console.log(member[0].name)
+        Swal( member[0].biography["full-name"]+", Alias: "+ member[0].name, `Height: ${member[0].appearance.height[0]}, Weight: ${member[0].appearance.height[1]}, 
+        Eyes: ${member[0].appearance["eye-color"]},  Hair: ${member[0].appearance["hair-color"]}, Work: ${member[0].work.base}`)
+
+    }
+
 
     return (
-        <div className="container-fluid row">
-            <div className="ml-3 row justify-content-around">
-                <div className="card ">                    
+        <div className="container-fluid row justify-content-around">
+            <div className="ml-3 row justify-content-around search-secc">
+                <div className="card searchCard">                    
                     <div className="card-body search">
                         <h5 className="card-title">Search by Id</h5>                        
                         <FormSearch getSuperhero={getSuperhero} ></FormSearch>
-                        <h5 className="card-title mt-2">Search by Name</h5>
+                        <h6 className="card-title mt-5">Search Id by Name</h6>
                         <form id="formularioByName" onSubmit={getSuperheroToName} className="form-inline justify-content-center">
                             <input required value={byName} onChange={(e) => { setByName(e.target.value)}} placeholder="Insert a Name"  className="mt-2 form-control" />                    
                             <input type="submit" value="Search" className="btn btn-primary mt-2 ml-2" />
                         </form>
+                        {
+                            stateResults ? 
+                            (
+                                
+                                <div className="listResults">
+                                    <h6>Results by Name</h6>
+                                    <ListOfResultsByName results={results}></ListOfResultsByName>
+                                </div>
+                                
+                                
+                            )
+                            :
+                            (
+                                <span>search Id suggestions by name</span>
+                            )
+                        }
                     </div>
                 </div>
                 <div className=" card-deck text-center row">
@@ -97,6 +140,7 @@ const Search = () => {
                             <div className="col-12">
                                 <Detail superh={superhero} ></Detail>
                                 <button onClick={addSuper} className="mx-auto my-1 py-0 btn btn-success">Add</button>
+                                <ToastContainer />
                             </div>     
                             
                         
@@ -104,30 +148,17 @@ const Search = () => {
                     )
                     :
                     (
-                        <div className="col-6">Search a hero </div>,
-                        results ? 
-                        (
-                            <div className="col-6"> Results, Search by Id</div>,
-                            results.map(item =>
-                                <li key={item.id}><strong>{item.id}</strong> {item.name}</li>
-                            )
-                            
-                        )
-                        :
-                        (
-                            <span></span>
-                        )
-                        
+                        <div className="">Search a hero by his Id</div>                        
                     )
                 }
                 </div>
                 {
                     team ?
                     (
-                        <div className="col-12 mt-3 row">
+                        <div className="col-12 mt-3 row justify-content-around">
                     {
                         team.map( hero => 
-                            <Team key={hero.id} deleteSuper={deleteSuper} superh={hero}></Team>
+                            <Team key={hero.id} deleteSuper={deleteSuper} showMember={showMember} superh={hero}></Team>
                         )
                     }
                     
@@ -142,7 +173,7 @@ const Search = () => {
 
                 
             </div>
-            <div className="col-3">
+            <div className="">
                 Resumen
                 
             </div>
