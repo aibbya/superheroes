@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Detail from './Detail';
-import Team from './Team';
+import Team from './MemberTeam';
 import FormSearch from './FormSearch';
 // import axios from 'axios';
 import ListOfResultsByName from './ListOfResultsByName';
@@ -13,7 +13,7 @@ import useLocalStorage from '../hooks/useLocalStorage'
 const Search = () => {
 
     const [superhero, setSuperhero] = useState(null)
-    const [team, setTeam] = useLocalStorage('',[])
+    const [team, setTeam] = useLocalStorage('team')
     const [idSuper, setIdSuper] = useState('')
     const [error, setError]= useState('')
     const [byName, setByName]= useState(null)
@@ -61,25 +61,83 @@ const Search = () => {
 
     }
     const notifyAdd = () => 
-    toast.success('🦄 Added!', {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        });;
+        toast.success('🦄 Added!', {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+    const notifyError = (msn) => 
+        toast.error(`🦄 Error! ${msn}`, {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+    
 
     const addSuper = () =>{
+
+        let heroes = team.filter(hero => hero.biography.alignment !== "bad")
+        console.log("heroes", heroes);
+        let villains = team.filter(hero => hero.biography.alignment === "bad")
+        console.log("villi", villains);
+        let acceptVillian = villains.length < 3 ? true : false
+        console.log(acceptVillian);
+        let acceptHeroes = heroes.length < 3 ? true: false
+        console.log(acceptHeroes);
+        let idsTeam = team.map(hero => hero.id)
+        let validMember = !idsTeam.includes(superhero.id)
+        console.log(team.length)
+        if (validMember) {
+            if( team.length < 6 ){
+                // debugger
                 
-        setTeam([
-            ...team, 
-            superhero
-        ]);
-        // Swal("Superhero added");
-       notifyAdd()
-        // setValidTeam(true)
+                
+                if (superhero.biography.alignment !== "bad" &&  acceptHeroes){
+                    return (
+                        setTeam([
+                            ...team, 
+                            superhero
+                        ]),
+                        notifyAdd()
+                    )
+                } else if (superhero.biography.alignment === "bad" &&  acceptVillian){
+                    return (
+                        setTeam([
+                            ...team, 
+                            superhero
+                        ]),
+                        notifyAdd()
+                    )
+                }else if (acceptHeroes === false ) {
+                    return(
+                        notifyError("Only 3 members with good orientation are allowed")
+                    )
+                    
+                } else if (acceptVillian === false){
+                    return(
+                        notifyError("Only 3 members with bad orientation are allowed")
+                    )
+                    
+                }
+
+                debugger
+                
+            }else{
+                notifyError("Only 6 members are allowed")
+            }
+        }else{
+            notifyError("This character is already a member")
+        }
+        
+               
     }
     const viewSuper = () =>{
                 
@@ -156,13 +214,13 @@ const Search = () => {
                     team ?
                     (
                         <div className="col-12 mt-3 row justify-content-around">
-                    {
-                        team.map( hero => 
-                            <Team key={hero.id} deleteSuper={deleteSuper} showMember={showMember} superh={hero}></Team>
-                        )
-                    }
+                            {
+                                team.map( hero => 
+                                    <Team key={hero.id} deleteSuper={deleteSuper} showMember={showMember} superh={hero}></Team>
+                                )
+                            }
                     
-                </div>
+                        </div>
                     )
                     :
                     (

@@ -7,15 +7,18 @@ import Team from './Components/Team';
 import Home from './Components/Home';
 
 
+
+
 function App() {
+  
   return (
     <div className="container-fluid text-center">       
       <Router>
         <Nav></Nav>
         <Switch>          
           <Route path="/login" component={Login}></Route>
-          {/* <Route exact path="/" component={Home}></Route> */}
-          <Route path="/team" component={Home}></Route>
+          <Route exact path="/team" component={Team}></Route>
+          <Route path="/home" component={Home}></Route>
         </Switch>
       </Router>     
     </div>

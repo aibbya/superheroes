@@ -10,7 +10,7 @@ const Nav = () => {
                     <h1 className="navbar-brand">My Heroes</h1>
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item"><Link className="nav-link" to="/login">Login</Link></li>
-                        <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
+                        <li className="nav-item"><Link className="nav-link" to="/home">Home</Link></li>
                         <li className="nav-item"><Link className="nav-link" to="/team">Team</Link></li>                                    
                     </ul>
                 </div>
