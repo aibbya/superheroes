@@ -6,6 +6,13 @@ import Swal from 'sweetalert'
 import useLocalStorage from '../hooks/useLocalStorage'
 import { Link, Switch } from 'react-router-dom';
 import { Redirect } from 'react-router-dom'
+import i_super from '../img/i-superpowers.svg'
+import i_dummble from '../img/i-dumbbell.svg'
+import i_bolt from '../img/i-bolt.svg'
+import i_brain from '../img/i-brain.svg'
+import i_history from '../img/i-history.svg'
+import i_hand from '../img/i-hand.svg'
+
 
 
 const Team = () => {
@@ -113,39 +120,75 @@ const Team = () => {
                                         
                                     </div>
                                 </section>
-                                <section className="col-xl-3">
+                                <section className="col-xl-4 p-5">
                                     <h1>Resumen</h1>
                                     {
                                         powerstats.map( powS =>{
                                             let icon = ''
                                             switch (powS.key){
                                                 case "Intelligence": 
-                                                    icon = "../../public/img/i-superpowers.svg"
+                                                    return (
+                                                        <div className="row justify-content-between border p-2 center powS mb-1" >
+                                                            <img src={i_brain} alt="" />                                                
+                                                            <label className="h5" for={powS.key}>{powS.key}</label>                                                
+                                                            <progress id={powS.key} max="500" value={powS.value}> </progress>
+                                                            <span>{powS.value}</span>
+                                                        </div> 
+                                                        )  
                                                 break
                                                 case "Combat":
-                                                    <i class="fas fa-hand-rock"></i>
+                                                    return (
+                                                    <div className="row justify-content-between border p-2 center powS mb-1" >
+                                                        <img src={i_hand} alt="" />                                                
+                                                        <label className="h5" for={powS.key}>{powS.key}</label>                                                
+                                                        <progress id={powS.key} max="500" value={powS.value}> </progress>
+                                                        <span>{powS.value}</span>
+                                                    </div> 
+                                                    )  
                                                 break
                                                 case "Durability":
-                                                    <i class="fas fa-history"></i>
+                                                    return (
+                                                    <div className="row justify-content-between border p-2 center powS mb-1" >
+                                                        <img src={i_history} alt="" />                                                
+                                                        <label className="h5" for={powS.key}>{powS.key}</label>                                                
+                                                        <progress id={powS.key} max="500" value={powS.value}> </progress>
+                                                        <span>{powS.value}</span>
+                                                    </div> 
+                                                    )  
                                                 break
                                                 case "Power":
-                                                    icon = "../../public/img/i-superpowers.svg"
+                                                    return (
+                                                    <div className="row justify-content-between border p-2 center powS mb-1" >
+                                                        <img src={i_super} alt="" />                                                
+                                                        <label className="h5" for={powS.key}>{powS.key}</label>                                                
+                                                        <progress id={powS.key} max="500" value={powS.value}> </progress>
+                                                        <span>{powS.value}</span>
+                                                    </div> 
+                                                    )  
                                                 break
                                                 case "Speed":
-                                                    <icon class="fas fa-bolt"></icon>
+                                                    return (
+                                                    <div className="row justify-content-between border p-2 center powS mb-1" >
+                                                        <img src={i_bolt} alt="" />                                                
+                                                        <label className="h5" for={powS.key}>{powS.key}</label>                                                
+                                                        <progress id={powS.key} max="500" value={powS.value}> </progress>
+                                                        <span>{powS.value}</span>
+                                                    </div> 
+                                                    )  
                                                 break
                                                 case "Strength":
-                                                    <i class="fas fa-dumbbell"></i>
+                                                    return (
+                                                    <div className="row justify-content-between border p-2 center powS mb-1" >
+                                                        <img src={i_dummble} alt="" />                                                
+                                                        <label className="h5" for={powS.key}>{powS.key}</label>                                                
+                                                        <progress id={powS.key} max="500" value={powS.value}> </progress>
+                                                        <span>{powS.value}</span>
+                                                    </div> 
+                                                    )  
                                                 break
                                             }
                                             
-                                            return (
-                                            <div className="row justify-content-between border p-2 center powS mb-1" >
-                                                <img src="../../public/img/i-superpowers.svg" alt="" />
-                                                <label className="h5" for={powS.key}>{powS.key}</label>                                                
-                                                <progress id={powS.key} max="500" value={powS.value}> </progress>
-                                                <span>{powS.value}</span>
-                                            </div> )    
+                                              
                                         })
                                     }
                                     
