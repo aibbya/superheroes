@@ -8,6 +8,7 @@ import Swal from 'sweetalert'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useLocalStorage from '../hooks/useLocalStorage'
+import Resume from './Resume';
 
 
 const Search = () => {
@@ -162,7 +163,7 @@ const Search = () => {
 
     return (
         <div className="container-fluid row justify-content-around">
-            <div className="ml-3 row justify-content-around search-secc">
+            <div className="ml-3 row justify-content-around search-secc col-xl-7">
                 <div className="card searchCard">                    
                     <div className="card-body search">
                         <h5 className="card-title">Search by Id</h5>                        
@@ -231,8 +232,8 @@ const Search = () => {
 
                 
             </div>
-            <div className="">
-                Resumen
+            <div className="col-xl-4">
+                <Resume team={team}></Resume>
                 
             </div>
         </div>

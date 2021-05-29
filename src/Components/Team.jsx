@@ -12,6 +12,10 @@ import i_bolt from '../img/i-bolt.svg'
 import i_brain from '../img/i-brain.svg'
 import i_history from '../img/i-history.svg'
 import i_hand from '../img/i-hand.svg'
+import Btn from './Btn';
+import Resume from './Resume';
+
+
 
 
 
@@ -19,7 +23,21 @@ const Team = () => {
 
     const redi = localStorage.getItem("token")
     console.log(redi)
-    const team = JSON.parse(localStorage.getItem("team"));
+    const [team, setTeam] = useLocalStorage('team')
+    const deleteSuper = (id) =>{
+        console.log(id);
+        setTeam(team.filter(hero => hero.id !== id))
+    }
+
+    const showMember = (id) =>{
+        
+        let member = team.filter(hero => hero.id === id)
+        console.log(member[0].name)
+        Swal( member[0].biography["full-name"]+", Alias: "+ member[0].name, `Height: ${member[0].appearance.height[0]}, Weight: ${member[0].appearance.height[1]}, 
+        Eyes: ${member[0].appearance["eye-color"]},  Hair: ${member[0].appearance["hair-color"]}, Work: ${member[0].work.base}`)
+
+    }
+
     let intelligence = 0
     let combat = 0
     let durability = 0
@@ -69,7 +87,7 @@ const Team = () => {
                                 (
                                     /* <div className="col-12 mt-3 row justify-content-around"> */
                                     <Fragment>
-                                    <section className="col-xl-8">
+                                    <section className="col-xl-7">
                                         <div className="page-header">
                                             <h1>Team</h1>
                                         </div>
@@ -114,13 +132,15 @@ const Team = () => {
                                                             
                                                         </div>
                                                     </article>
+                                                    <Btn deleteSuper={deleteSuper} showMember={showMember} superh={hero}></Btn>
                                                 </div>
                                             )
                                         }
                                         
                                     </div>
                                 </section>
-                                <section className="col-xl-4 p-5">
+                                <Resume team={team}></Resume>
+                                {/* <section className="col-xl-4 p-5">
                                     <h1>Resumen</h1>
                                     {
                                         powerstats.map( powS =>{
@@ -187,12 +207,10 @@ const Team = () => {
                                                     )  
                                                 break
                                             }
-                                            
-                                              
                                         })
                                     }
                                     
-                                </section>
+                                </section> */}
                                 </Fragment>
                                 
                                 )

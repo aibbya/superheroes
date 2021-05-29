@@ -1,5 +1,7 @@
 import React from 'react'
 import '../App.css';
+import Btn from './Btn';
+
 
 const MemberTeam = ({deleteSuper, showMember, superh}) => {
 
@@ -17,11 +19,12 @@ const MemberTeam = ({deleteSuper, showMember, superh}) => {
                     <img src={superh.image.url} alt="imgHero"/>
                     
                         <small className="">Alignment: {superh.biography.alignment}</small>
+                        <Btn deleteSuper={deleteSuper} showMember={showMember} superh={superh}></Btn>
                    
-                    <div className="btn-group">
+                    {/* <div className="btn-group">
                         <button onClick={() => {showMember(superh.id)}} className="btn btn-info my-1 py-0 px-1">Details</button>
                         <button onClick={() => {deleteSuper(superh.id)}} className="btn btn-danger my-1 py-0 px-1">Remove</button>
-                    </div>                  
+                    </div>                   */}
                 </div>
             </div>
         </div>
