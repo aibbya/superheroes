@@ -1,29 +1,43 @@
-import React, { Fragment, useState } from 'react'
-import { useForm } from 'react-hook-form';
+import React, { Fragment } from 'react'
+import { useFormik } from 'formik';
 
 
-const FormSearch = (props) => {
-
-    const {register, handleSubmit, errors} = useForm();
-
-    const onSubmit = (data, e)=>{
-        
-        // e.preventDefault()
-        console.log(data)
-
-        props.getSuperhero(data.idHero)
-
-        e.target.reset()
+ const validate = values => {
+    //  debugger
+    const errors = {};
+    if (!values.idHero) {
+      errors.idHero = 'Required';
+      console.log(typeof(values.idHero));
+    } else if (parseInt(values.idHero) > 732 ) {
+      errors.idHero = 'Must be 732 or less';
     }
+    return errors;
+  };
+const FormSearch = (props) => {
+     
+      const formik = useFormik({
+        initialValues: {
+          idHero: ''          
+        },
+        validate,
+        onSubmit: values => {
+          props.getSuperhero(values.idHero)
+        },
+      });
 
     return (
         <Fragment>
-            <form id="formulario" onSubmit={handleSubmit(onSubmit)} className="form-inline justify-content-center">
-                <input type="number" name="idHero" {...register("idHero", { required: true })} placeholder="Insert a Number"  className="mt-2 form-control"/>
-                <span className="alert-danger">
-                    {errors?.idHero?.message}
-                </span>                    
-                <input type="submit" value="Search" className="btn btn-primary mt-2 ml-2" />
+            <form  onSubmit={formik.handleSubmit} id="formulario" className="form-inline justify-content-center">
+                <input 
+                    type="number" 
+                    id="idHero" 
+                    name="idHero"  
+                    placeholder="Insert a Number" 
+                    value={formik.values.idHero} 
+                    onChange={formik.handleChange}  
+                    className="mt-2 form-control"/>                    
+                    <button type="submit" className="btn btn-primary mt-2 ml-2 text-small" >Search</button>
+                    {formik.errors.idHero ? <span className="text-danger">{formik.errors.idHero}</span> : null}
             </form>
         </Fragment>
     )

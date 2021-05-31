@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Detail from './Detail';
 import Team from './MemberTeam';
 import FormSearch from './FormSearch';
-// import axios from 'axios';
+import axios from 'axios';
 import ListOfResultsByName from './ListOfResultsByName';
 import Swal from 'sweetalert'
 import { ToastContainer, toast } from 'react-toastify';
@@ -11,17 +11,15 @@ import useLocalStorage from '../hooks/useLocalStorage'
 import Resume from './Resume';
 
 
+
+
 const Search = () => {
 
-    const [superhero, setSuperhero] = useState(null)
-    const [team, setTeam] = useLocalStorage('team')
-    const [idSuper, setIdSuper] = useState('')
-    const [error, setError]= useState('')
+    const [superhero, setSuperhero] = useState(null)    
+    const [team, setTeam] = useLocalStorage('team',[])
     const [byName, setByName]= useState(null)
     const [results, setResults] = useState([])
-    const [superOfTeam, setSuperOfTeam] = useState(null)
     const [stateResults, setStateResults] = useState(false);
-    const [msnError, setMsnError] = useState('')
 
 
     useEffect(() => {
@@ -29,33 +27,35 @@ const Search = () => {
     }, [])    
     
     const getSuperhero = async (id, e) => {   
-       const data = await fetch('https://superheroapi.com/api/10158049106275592/'+id)
-            .then(r => r.json())
-            .catch(e => console.log(e))
-        // setResults('')
-        setSuperhero(data)
-        console.log(data);
+       await axios({ method: 'GET', url: 'https://superheroapi.com/api/10158049106275592/'+id })
+            .then( r => {
+                console.log(r)
+                setResults('')
+                setSuperhero(r.data)
+                console.log(r.data);
+            })
+            .catch(e => {
+                console.log(e)
+                notifyError('Need one plugin allows you to send cross-domain requests directly from browser without receiving Cross Origin Errors like "Moesif Origin & CORS Changer"')
+            })
+        // 
     }
 
     const getSuperheroToName = async (e)=>{
         e.preventDefault()
         setSuperhero('')
-        if (!byName.trim()){
-            setError('Insert a name')
-            return
-        }
-
+       
         const dataByName = await fetch('https://superheroapi.com/api/10158049106275592/search/'+byName)
         .then(r =>   r.json())
-        .catch(e => console.log(e))        
+        .catch(e => console.log(e)) 
+              
         console.log(dataByName)
+        
         if(dataByName.response === "success"){
             setResults(dataByName.results)
             setStateResults(true)
-        } else{
-            setResults([])
-            setStateResults(false)
-            setMsnError('Name not found')
+        } else {
+            notifyError(dataByName.error)
         }
         
         console.log(results);
@@ -85,66 +85,67 @@ const Search = () => {
 
     const addSuper = () =>{
 
-        let heroes = team.filter(hero => hero.biography.alignment !== "bad")
-        console.log("heroes", heroes);
-        let villains = team.filter(hero => hero.biography.alignment === "bad")
-        console.log("villi", villains);
-        let acceptVillian = villains.length < 3 ? true : false
-        console.log(acceptVillian);
-        let acceptHeroes = heroes.length < 3 ? true: false
-        console.log(acceptHeroes);
-        let idsTeam = team.map(hero => hero.id)
-        let validMember = !idsTeam.includes(superhero.id)
-        console.log(team.length)
-        if (validMember) {
-            if( team.length < 6 ){
-                // debugger
-                
-                
-                if (superhero.biography.alignment !== "bad" &&  acceptHeroes){
-                    return (
-                        setTeam([
-                            ...team, 
-                            superhero
-                        ]),
-                        notifyAdd()
-                    )
-                } else if (superhero.biography.alignment === "bad" &&  acceptVillian){
-                    return (
-                        setTeam([
-                            ...team, 
-                            superhero
-                        ]),
-                        notifyAdd()
-                    )
-                }else if (acceptHeroes === false ) {
-                    return(
-                        notifyError("Only 3 members with good orientation are allowed")
-                    )
-                    
-                } else if (acceptVillian === false){
-                    return(
-                        notifyError("Only 3 members with bad orientation are allowed")
-                    )
-                    
-                }
+        if (team){
+            const heroes = team.filter(hero => hero.biography.alignment !== "bad")
+            console.log("heroes", heroes);
+            const villains = team.filter(hero => hero.biography.alignment === "bad")
+            console.log("villi", villains);
+            const acceptVillian = villains.length < 3 ? true : false
+            console.log(acceptVillian);
+            const acceptHeroes = heroes.length < 3 ? true: false
+            console.log(acceptHeroes);
+            const idsTeam = team.map(hero => hero.id)
+            const validMember = !idsTeam.includes(superhero.id)
+            console.log(team.length)
 
-                debugger
-                
+            if (validMember) {
+                if( team.length < 6 ){
+                    // debugger
+                    
+                    
+                    if (superhero.biography.alignment !== "bad" &&  acceptHeroes){
+                        return (
+                            setTeam([
+                                ...team, 
+                                superhero
+                            ]),
+                            notifyAdd()
+                        )
+                    } else if (superhero.biography.alignment === "bad" &&  acceptVillian){
+                        return (
+                            setTeam([
+                                ...team, 
+                                superhero
+                            ]),
+                            notifyAdd()
+                        )
+                    }else if (acceptHeroes === false ) {
+                        return(
+                            notifyError("Only 3 members with good orientation are allowed")
+                        )
+                        
+                    } else if (acceptVillian === false){
+                        return(
+                            notifyError("Only 3 members with bad orientation are allowed")
+                        )
+                        
+                    }
+    
+                    debugger
+                    
+                }else{
+                    notifyError("Only 6 members are allowed")
+                }
             }else{
-                notifyError("Only 6 members are allowed")
+                notifyError("This character is already a member")
             }
+            
         }else{
-            notifyError("This character is already a member")
+            setTeam([ superhero ])
+            notifyAdd()
         }
-        
-               
     }
-    const viewSuper = () =>{
-                
-        setSuperOfTeam();
-        // setValidTeam(true)
-    }
+  
 
     const deleteSuper = (id) =>{
         console.log(id);
@@ -173,6 +174,7 @@ const Search = () => {
                             <input required value={byName} onChange={(e) => { setByName(e.target.value)}} placeholder="Insert a Name"  className="mt-2 form-control" />                    
                             <input type="submit" value="Search" className="btn btn-primary mt-2 ml-2" />
                         </form>
+                        <ToastContainer />
                         {
                             stateResults ? 
                             (
@@ -191,15 +193,14 @@ const Search = () => {
                         }
                     </div>
                 </div>
-                <div className=" card-deck text-center row">
+                <div className=" card-deck text-center row detailSearch">
                 {
                     superhero ? 
                     (
                         
                             <div className="col-12">
                                 <Detail superh={superhero} ></Detail>
-                                <button onClick={addSuper} className="mx-auto my-1 py-0 btn btn-success">Add</button>
-                                <ToastContainer />
+                                <button onClick={addSuper} className="mx-auto my-1 py-0 btn btn-success">Add</button>                                
                             </div>     
                             
                         
@@ -207,7 +208,7 @@ const Search = () => {
                     )
                     :
                     (
-                        <div className="">Search a hero by his Id</div>                        
+                        <div className="">Search a hero by Id</div>                        
                     )
                 }
                 </div>
@@ -236,6 +237,7 @@ const Search = () => {
                 <Resume team={team}></Resume>
                 
             </div>
+            
         </div>
     )
 }

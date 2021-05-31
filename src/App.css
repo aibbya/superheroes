@@ -1,3 +1,8 @@
+.header span{
+  font-size: small;
+  position: absolute;
+  top: 5.5vh;
+}
 
 .search-secc{
     width: 70%;
@@ -6,6 +11,18 @@
 
 .searchCard{
     max-width: 45%;
+}
+
+.search span{
+  font-size: smaller;
+}
+
+.search button{
+  font-size: smaller;
+}
+
+.detailSearch{
+  max-width: 20rem;
 }
 
 .cardTeam{
@@ -60,6 +77,15 @@
 
 .powS img{
   width: 5%
+}
+
+/* BTN */
+.btnsDetailRemove{
+  margin-bottom: 20%;
+}
+/* RESUME */
+.resume{
+  position: absolute
 }
 
 
@@ -232,9 +258,9 @@
   display: block;
   float: left;
   position: relative;
-  width: 25%;
+  width: 22%;
   height: 5%;
-  margin-left: 1rem;
+  margin-left: 0.5rem;
   margin-bottom: 15px;
   font-size: 12px;
   color: #fff;
