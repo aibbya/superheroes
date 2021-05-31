@@ -11,12 +11,7 @@ import i_hand from '../img/i-hand.svg'
 import i_weight from '../img/i-weight.svg'
 import i_ruler from '../img/i-ruler.svg'
 
-
-
-
-
 const Resume = ({team}) => {
-
     
     let intelligence = 0
     let combat = 0
@@ -138,7 +133,10 @@ const Resume = ({team}) => {
                                                     </div> 
                                                     )  
                                             break
-                                            
+                                            default:  
+                                                return (
+                                                    <span></span>
+                                                )
                                             }
                                         })
                                     }

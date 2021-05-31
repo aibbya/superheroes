@@ -1,5 +1,4 @@
 $(function() {
-    console.log("hoal")
     $('.material-card > .mc-btn-action').on("click", function () {
         console.log("l65651")
         var card = $(this).parent('.material-card');
@@ -18,13 +17,11 @@ $(function() {
             }, 800);
         } else {
             card.addClass('mc-active');
-
             window.setTimeout(function() {
                 icon
                     .removeClass('fa-bars')
                     .removeClass('fa-spin-fast')
                     .addClass('fa-arrow-left');
-
             }, 800);
         }
     });

@@ -5,8 +5,6 @@ import Btn from './Btn';
 
 const MemberTeam = ({deleteSuper, showMember, superh}) => {
 
-    
-
     return (
 
         <div className="card-deck mb-3 text-center mt-3 cardTeam ">
@@ -17,14 +15,8 @@ const MemberTeam = ({deleteSuper, showMember, superh}) => {
                 <div className="card-body">
                     <div className="card-title"></div>
                     <img src={superh.image.url} alt="imgHero"/>
-                    
                         <small className="">Alignment: {superh.biography.alignment}</small>
                         <Btn deleteSuper={deleteSuper} showMember={showMember} superh={superh}></Btn>
-                   
-                    {/* <div className="btn-group">
-                        <button onClick={() => {showMember(superh.id)}} className="btn btn-info my-1 py-0 px-1">Details</button>
-                        <button onClick={() => {deleteSuper(superh.id)}} className="btn btn-danger my-1 py-0 px-1">Remove</button>
-                    </div>                   */}
                 </div>
             </div>
         </div>

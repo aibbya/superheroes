@@ -16,18 +16,12 @@ const validate = values => {
       } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
         errors.email = 'Invalid email address';
       }
-    
-
-
     return errors;
   };
 
 const Login = () => {
-
-    
     const [token, setToken] = useLocalStorage('token','')
     const [redi, setRedirec] = useState(false)
-
     
     const notify = () => 
     toast('🦄 Wellcome!', {
@@ -51,52 +45,25 @@ const Login = () => {
             progress: undefined,
             });
 
-            const formik = useFormik({
-                initialValues: {
-                  email: '',
-                  password: ''  
-                },
-                validate,
-                onSubmit: async (values) => {
-                    await axios({ method: 'POST', url: 'http://challenge-react.alkemy.org', data: values})
-                        .then( consulta =>{           
-                            console.log(consulta.data.token)
-                            setToken(consulta.data.token)
-                            console.log("TOKEN ",token)
-                            notify()                            
-                            setTimeout(() => {
-                                setRedirec(true);
-                            }, 3000)
-                            }
-                        ).catch( error =>{                            
-                            notifyError()
-                            })            
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: ''  
+        },
+        validate,
+        onSubmit: async (values) => {
+            await axios({ method: 'POST', url: 'http://challenge-react.alkemy.org', data: values})
+                .then( consulta =>{
+                    setToken(consulta.data.token)
+                    notify()                            
+                    setTimeout(() => {
+                        setRedirec(true);
+                    }, 2500)
+                }).catch( error =>{                            
+                    notifyError()
+                })            
                 },
               });
-    // const onSubmit = async (data, e)=>{
-        
-    //     // http://challenge-react.alkemy.org,
-    //     // e.preventDefault()
-    //     console.log(data)
-    //     await axios({ method: 'POST', url: 'http://challenge-react.alkemy.org', data: data })
-    //     .then( consulta =>{           
-    //         console.log(consulta.data.token)
-    //         setToken(consulta.data.token)
-    //         console.log("TOKEN ",token)
-    //         notify()
-    //         e.target.reset()
-    //         setTimeout(() => {
-    //             setRedirec(true);
-    //         }, 3000)
-    //         }
-    //     ).catch( error =>{
-    //         e.target.reset()
-    //         notifyError()
-    //         }            
-    //     )
-            
-    // }
-    
     
         return (
             <div>
@@ -112,7 +79,7 @@ const Login = () => {
                     <form onSubmit={formik.handleSubmit} className="formLogin form-signin" >
                         <img src="http://cdn26.us1.fansshare.com/photo/marvel/superheroes-logo-marvel-1587787146.jpg" alt="" className="mb-4" />
                         <h1 className="h3 mb-3 font-weigth-normal">Please sign in</h1>
-                        <label htmlFor="inputEmail" className="sr-only">Email Address</label>
+                        <label htmlFor="email" className="sr-only">Email Address</label>
                         <input 
                             type="email" 
                             id="email" 
@@ -137,27 +104,12 @@ const Login = () => {
                         <button type="submit" className="btn btn-lg btn-primary btn-block mt-3" >Sign in</button>
                         <ToastContainer />
                     </form>
-                    {/* <form  onSubmit={formik.handleSubmit} id="formulario" className="form-inline justify-content-center">
-                <input 
-                    type="number" 
-                    id="idHero" 
-                    name="idHero"  
-                    placeholder="Insert a Number" 
-                    value={formik.values.idHero} 
-                    onChange={formik.handleChange}  
-                    className="mt-2 form-control"/>                    
-                    <button type="submit" className="btn btn-primary mt-2 ml-2 text-small" >Search</button>
-                    {formik.errors.idHero ? <span className="text-danger">{formik.errors.idHero}</span> : null}
-            </form> */}
-                
+                    
                     </div>
                 )
             }
             </div>
-            
         )
-    
-
     
 }
 

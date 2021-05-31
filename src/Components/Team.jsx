@@ -14,26 +14,18 @@ import Resume from './Resume';
 
 const Team = () => {
 
-    const redi = localStorage.getItem("token")
-    console.log(redi)
-
+    const redi = localStorage.getItem("token")    
     const [team, setTeam] = useLocalStorage('team')
-    const deleteSuper = (id) =>{
-        console.log(id);
+    const deleteSuper = (id) =>{      
         setTeam(team.filter(hero => hero.id !== id))
     }
 
-    const showMember = (id) =>{
-        
-        let member = team.filter(hero => hero.id === id)
-        console.log(member[0].name)
+    const showMember = (id) =>{        
+        let member = team.filter(hero => hero.id === id)     
         Swal( member[0].biography["full-name"]+", Alias: "+ member[0].name, `Height: ${member[0].appearance.height[0]}, Weight: ${member[0].appearance.height[1]}, 
         Eyes: ${member[0].appearance["eye-color"]},  Hair: ${member[0].appearance["hair-color"]}, Work: ${member[0].work.base}`)
 
     }
-
-   
-
     return (
 
         <div className="container-fluid row justify-content-between">            
@@ -80,12 +72,12 @@ const Team = () => {
                                                         <div className="mc-footer">
                                                             <h4>Powerstats</h4>    
                                                             <div>
-                                                                <a class="" ><i class="fas fa-hand-rock"></i> {hero.powerstats.combat}</a>
-                                                                <a class=""><i class="fas fa-history"></i> {hero.powerstats.durability}</a>
-                                                                <a class=""><i class="fas fa-brain"></i> {hero.powerstats.intelligence}</a>
-                                                                <a class=""><i class="fab fa-superpowers"></i> {hero.powerstats.power} </a>
-                                                                <a class=""><i class="fas fa-bolt"></i> {hero.powerstats.speed}</a>
-                                                                <a class=""><i class="fas fa-dumbbell"></i> {hero.powerstats.strength}</a>
+                                                                <a className="" ><i className="fas fa-hand-rock"></i> {hero.powerstats.combat}</a>
+                                                                <a className=""><i className="fas fa-history"></i> {hero.powerstats.durability}</a>
+                                                                <a className=""><i className="fas fa-brain"></i> {hero.powerstats.intelligence}</a>
+                                                                <a className=""><i className="fab fa-superpowers"></i> {hero.powerstats.power} </a>
+                                                                <a className=""><i className="fas fa-bolt"></i> {hero.powerstats.speed}</a>
+                                                                <a className=""><i className="fas fa-dumbbell"></i> {hero.powerstats.strength}</a>
                                                             </div>                    
                                                             
                                                         </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Detail from './Detail';
 import Team from './MemberTeam';
 import FormSearch from './FormSearch';
@@ -17,22 +17,16 @@ const Search = () => {
 
     const [superhero, setSuperhero] = useState(null)    
     const [team, setTeam] = useLocalStorage('team',[])
-    const [byName, setByName]= useState(null)
+    const [byName, setByName]= useState('')
     const [results, setResults] = useState([])
     const [stateResults, setStateResults] = useState(false);
 
 
-    useEffect(() => {
-        
-    }, [])    
-    
     const getSuperhero = async (id, e) => {   
        await axios({ method: 'GET', url: 'https://superheroapi.com/api/10158049106275592/'+id })
             .then( r => {
-                console.log(r)
                 setResults('')
-                setSuperhero(r.data)
-                console.log(r.data);
+                setSuperhero(r.data)                
             })
             .catch(e => {
                 console.log(e)
@@ -57,8 +51,6 @@ const Search = () => {
         } else {
             notifyError(dataByName.error)
         }
-        
-        console.log(results);
 
     }
     const notifyAdd = () => 
@@ -86,22 +78,16 @@ const Search = () => {
     const addSuper = () =>{
 
         if (team){
-            const heroes = team.filter(hero => hero.biography.alignment !== "bad")
-            console.log("heroes", heroes);
-            const villains = team.filter(hero => hero.biography.alignment === "bad")
-            console.log("villi", villains);
-            const acceptVillian = villains.length < 3 ? true : false
-            console.log(acceptVillian);
+            const heroes = team.filter(hero => hero.biography.alignment !== "bad")            
+            const villains = team.filter(hero => hero.biography.alignment === "bad")            
+            const acceptVillian = villains.length < 3 ? true : false            
             const acceptHeroes = heroes.length < 3 ? true: false
-            console.log(acceptHeroes);
             const idsTeam = team.map(hero => hero.id)
             const validMember = !idsTeam.includes(superhero.id)
-            console.log(team.length)
 
             if (validMember) {
                 if( team.length < 6 ){
-                    // debugger
-                    
+                    // debugger                
                     
                     if (superhero.biography.alignment !== "bad" &&  acceptHeroes){
                         return (
@@ -129,9 +115,7 @@ const Search = () => {
                             notifyError("Only 3 members with bad orientation are allowed")
                         )
                         
-                    }
-    
-                    debugger
+                    }    
                     
                 }else{
                     notifyError("Only 6 members are allowed")
@@ -147,15 +131,12 @@ const Search = () => {
     }
   
 
-    const deleteSuper = (id) =>{
-        console.log(id);
+    const deleteSuper = (id) =>{       
         setTeam(team.filter(hero => hero.id !== id))
     }
 
     const showMember = (id) =>{
-        
         let member = team.filter(hero => hero.id === id)
-        console.log(member[0].name)
         Swal( member[0].biography["full-name"]+", Alias: "+ member[0].name, `Height: ${member[0].appearance.height[0]}, Weight: ${member[0].appearance.height[1]}, 
         Eyes: ${member[0].appearance["eye-color"]},  Hair: ${member[0].appearance["hair-color"]}, Work: ${member[0].work.base}`)
 
@@ -171,7 +152,7 @@ const Search = () => {
                         <FormSearch getSuperhero={getSuperhero} ></FormSearch>
                         <h6 className="card-title mt-5">Search Id by Name</h6>
                         <form id="formularioByName" onSubmit={getSuperheroToName} className="form-inline justify-content-center">
-                            <input required value={byName} onChange={(e) => { setByName(e.target.value)}} placeholder="Insert a Name"  className="mt-2 form-control" />                    
+                            <input onChange={(e) => { setByName(e.target.value)}} placeholder="Insert a Name" required value={byName} className="mt-2 form-control" />                    
                             <input type="submit" value="Search" className="btn btn-primary mt-2 ml-2" />
                         </form>
                         <ToastContainer />
@@ -229,9 +210,6 @@ const Search = () => {
                         <span> Create a Team </span>
                     )
                 }
-                
-
-                
             </div>
             <div className="col-xl-4">
                 <Resume team={team}></Resume>
